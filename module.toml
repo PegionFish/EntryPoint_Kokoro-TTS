@@ -1,0 +1,61 @@
+[module]
+id = "kokoro-tts"
+name = "Kokoro TTS 语音合成"
+version = "1.0.0"
+description = "Kokoro-82M 轻量高质量语音合成（Apache-2.0，<1GB，CPU 可跑）：多语言（英/日，中文经 v1.1-zh 实验）82M ONNX 推理"
+category = "tts"
+genre = "kokoro"
+authors = ["EntryPoint Community"]
+license = "Apache-2.0"
+homepage = "https://huggingface.co/hexgrad/Kokoro-82M"
+tags = ["tts", "speech-synthesis", "lightweight", "cpu-friendly", "onnx"]
+
+[runtime]
+type = "python"
+python_version = ">=3.10,<3.13"
+requirements = "requirements.txt"
+entrypoint = "adapter.py"
+start_command = "{venv_python} {MODULE_DIR}/{entrypoint}"
+
+[compute]
+# 纯 CPU 推理（onnxruntime CPU EP）：82M 模型单句亚秒级，主开销记 RAM 池
+backends = ["cpu"]
+default_backend = "cpu"
+ram_estimate_mb = 1024
+
+# 模型文件经 daemon 下载协议（source=url 直链）落位 MODULE_DIR/<target_dir>/；
+# adapter 以 MODULE_DIR 环境变量反查。模型 onnx 走 ModelScope CDN 直链
+# （国内可达；整仓 snapshot 会拖全部量化变体故用 url 单文件），合并音色包
+# voices-*.bin 无 MS 镜像走 kokoro-onnx 官方 GitHub Release。
+
+[[models]]
+id = "model-onnx"
+name = "Kokoro v1.0 ONNX (en/ja)"
+source = "url"
+repo_id = "https://modelscope.cn/models/onnx-community/Kokoro-82M-v1.0-ONNX/resolve/master/onnx/model.onnx"
+target_dir = "kokoro-v1.0"
+size_estimate_mb = 311
+
+[[models]]
+id = "model-onnx-zh"
+name = "Kokoro v1.1-zh ONNX (zh)"
+source = "url"
+repo_id = "https://modelscope.cn/models/onnx-community/Kokoro-82M-v1.1-zh-ONNX/resolve/master/onnx/model.onnx"
+target_dir = "kokoro-v1.1-zh"
+size_estimate_mb = 311
+
+[[models]]
+id = "voices-v1"
+name = "Kokoro v1.0 合并音色表"
+source = "url"
+repo_id = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/voices-v1.0.bin"
+target_dir = "kokoro-v1.0"
+size_estimate_mb = 27
+
+[[models]]
+id = "voices-v1-zh"
+name = "Kokoro v1.1-zh 合并音色表"
+source = "url"
+repo_id = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/voices-v1.1-zh.bin"
+target_dir = "kokoro-v1.1-zh"
+size_estimate_mb = 51

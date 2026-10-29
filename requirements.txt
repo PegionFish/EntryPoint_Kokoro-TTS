@@ -1,0 +1,9 @@
+# kokoro-onnx：ONNX Runtime 推理（CPU），Apache-2.0
+# 0.6.1 与 thewh1teagle model-files-v1.1 的 onnx 图（input_ids 输入）配套
+# （0.4.x 喂 tokens 与之不兼容——实测踩坑）；服务器 venv（python 3.12）实测通过
+kokoro-onnx==0.6.1
+soundfile>=0.12
+numpy>=1.26,<3
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9

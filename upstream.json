@@ -1,0 +1,14 @@
+{
+  "upstream": "https://github.com/hexgrad/Kokoro-82M",
+  "module_id": "kokoro-tts",
+  "module_name": "Kokoro TTS 语音合成",
+  "version": "1.0.0",
+  "source_commit": "6657c344",
+  "synced_at": "2026-10-29",
+  "models": [
+    "kokoro-v1.0.onnx",
+    "voices-v1.0.bin",
+    "kokoro-v1.1-zh.onnx",
+    "voices-v1.1-zh.bin"
+  ]
+}
